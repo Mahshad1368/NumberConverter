@@ -9,16 +9,26 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var numInput = ""
-    let inputBase = 16
+    @State private var inputBase = 16
+    
+    let inputSystem = [ 2: "Binärsystem", 8: "Oktalsystem", 10: "Dezimalsystem", 16: "Hexadezimalsystem"]
     
     var body: some View {
         VStack {
             Menu {
-                Text("1")
-                Text("2")
+                ForEach(inputSystem.sorted(by: <), id: \.key) { base, name in
+                    Button(action: {inputBase = base }) {
+                    Text(name)
+                    }
+                    
+                }
+                
             } label: {
-                Text("Eingabeformat wählen")
+                Text("Eingaben \(inputSystem[inputBase] ?? "")")
+                
+                #if os(iOS)
                 Image(systemName: "chevron.down")
+                #endif
             }
 
             TextField("Your input", text: $numInput)
@@ -69,5 +79,6 @@ struct NumberLine: View {
                 .minimumScaleFactor(0.2)
             
         }.foregroundColor(.white)
+        .lineLimit(1)
     }
 }
